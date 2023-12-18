@@ -1,0 +1,43 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.interpolate import make_interp_spline
+
+# Define the MC data points
+q_values = [1, 2, 3, 4.5, 5]
+mc_values = [5, 3, 4, 8, 10]
+
+# Define constant marginal revenue (mr)
+mr_value = 6
+
+# Create the spline object
+spline = make_interp_spline(q_values, mc_values, k=3)  # k=3 specifies a cubic spline
+
+# Generate interpolated MC values for a smoother curve
+smooth_q_values = np.linspace(min(q_values), max(q_values), 200)  # adjust resolution as needed
+smooth_mc_values = spline(smooth_q_values)
+
+# Create the plot
+plt.figure(figsize=(10, 8))
+
+# Plot interpolated MC curve and MR line
+plt.plot(smooth_q_values, smooth_mc_values, marker='o', linestyle='-', label='Smoothed MC (Spline)', color="#002FA7")
+plt.axhline(y=mr_value, color='green', linestyle='-', label='Marginal Revenue (MR)')
+
+# Optionally plot the original data points (adjust legend if included)
+# plt.plot(q_values, mc_values, marker='x', color='red', linestyle='', label='MC Data Points')
+
+# Label axes and title
+plt.xlabel('Quantity (Q)')
+plt.ylabel('Price (MC)')
+plt.title('Short-Run Smoothed MC and Marginal Revenue (Spline)')
+
+# Add legend
+plt.legend()
+
+# Customize grid and axes
+plt.grid(True)
+plt.xlim(0, 6)
+plt.ylim(0, 12)
+
+# Show the plot
+plt.show()
